@@ -1,0 +1,46 @@
+plugins {
+	id 'java'
+	id 'jacoco'
+	id 'application'
+	id 'com.diffplug.spotless' version '5.3.0'
+}
+
+apply from: "$rootDir/gradle/deps.gradle"
+
+repositories {
+	jcenter()
+}
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_11
+	targetCompatibility = JavaVersion.VERSION_11
+}
+
+dependencies {
+	testImplementation libs.junitJupiterApi
+	testRuntimeOnly libs.junitJupiterEngine
+}
+
+application {
+	mainClassName = 'template.App'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+spotless {
+	java {
+		importOrder()
+		removeUnusedImports()
+		googleJavaFormat()
+		trimTrailingWhitespace()
+		endWithNewline()
+	}
+	groovyGradle {
+		target '*.gradle', 'gradle/*.gradle'
+		trimTrailingWhitespace()
+		endWithNewline()
+		greclipse()
+	}
+}
